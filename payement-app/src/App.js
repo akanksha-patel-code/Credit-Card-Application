@@ -1,111 +1,15 @@
-import "./App.css";
-import { Formik, Field } from "formik";
-import { PaymentInputsWrapper, usePaymentInputs } from "react-payment-inputs";
-import images from "react-payment-inputs/images";
+import React from 'react';
 
-function App() {
-  const {
-    meta,
-    getCardImageProps,
-    getCardNumberProps,
-    getExpiryDateProps,
-    getCVCProps,
-    wrapperProps,
-  } = usePaymentInputs();
+import { QueryClient, QueryClientProvider } from 'react-query';
+import Main from './Main';
 
-  function validateUsername(value) {
-    let error;
-   if (!value) {
-     error = 'Card Holder name is required';
-   } 
-   return error;
-  }
-
-  return (
-    <Formik
-      initialValues={{
-        cardHolder: "",
-        cardNumber: "",
-        expiryDate: "",
-        cvc: "",
-      }}
-      onSubmit={(data) => console.log(data)}
-      validate={() => {
-        let errors = {};
-        if (meta.erroredInputs.cardNumber) {
-          errors.cardNumber = meta.erroredInputs.cardNumber;
-        }
-        if (meta.erroredInputs.expiryDate) {
-          errors.expiryDate = meta.erroredInputs.expiryDate;
-        }
-        if (meta.erroredInputs.cvc) {
-          errors.cvc = meta.erroredInputs.cvc;
-        }
-        return errors;
-      }}
-    >
-      {({ handleSubmit, errors, touched }) => (
-        <form onSubmit={handleSubmit}>
-          <div className="flex flex-col">
-            <div className="flex justify-center items-center flex-col">
-            <label className="text-xl font-bold mt-8">Credit Holder Name</label>
-            <Field
-              name="cardHolder"
-              placeholder="John Smith"
-              type="text"
-              className="w-1/4 border-2 border-gray-400 rounded-md outline-white"
-              validate={validateUsername}
-            />
-            {errors.cardHolder && touched.cardHolder && 
-            <div className="text-red-700 text-xs flex-none">{errors.cardHolder}</div>}
-            <label className="text-xl font-bold mt-8">
-              Credit Card Details
-            </label>
-            <PaymentInputsWrapper className="w-1/4 justify-center flex items-center" {...wrapperProps}>
-              <svg {...getCardImageProps({ images })} />
-              <Field name="cardNumber">
-                {({ field }) => (
-                  <input
-                    {...getCardNumberProps({
-                      onBlur: field.onBlur,
-                      onChange: field.onChange,
-                    })}
-                  />
-                )}
-              </Field>
-              <Field name="expiryDate">
-                {({ field }) => (
-                  <input
-                    {...getExpiryDateProps({
-                      onBlur: field.onBlur,
-                      onChange: field.onChange,
-                    })}
-                  />
-                )}
-              </Field>
-              <Field name="cvc">
-                {({ field }) => (
-                  <input
-                    {...getCVCProps({
-                      onBlur: field.onBlur,
-                      onChange: field.onChange,
-                    })}
-                  />
-                )}
-              </Field>
-            </PaymentInputsWrapper>
-            <button
-              className="w-1/6 py-2 border rounded-lg text-white bg-blue-500 mt-8 hover:bg-white hover:text-blue-500 hover:border hover:border-blue-500"
-              type="submit"
-            >
-              Submit
-            </button>
-            </div>
-          </div>
-        </form>
-      )}
-    </Formik>
-  );
-}
+const App = () => {
+	const queryClient = new QueryClient();
+	return (
+		<QueryClientProvider client={queryClient}>
+				<Main />
+		</QueryClientProvider>
+	);
+};
 
 export default App;
