@@ -1,4 +1,3 @@
-import "./App.css";
 import { Formik, Field } from "formik";
 import { PaymentInputsWrapper, usePaymentInputs } from "react-payment-inputs";
 import images from "react-payment-inputs/images";
@@ -24,7 +23,11 @@ function Main() {
   }
 
   const creditCardMutation= useMutation(async (data) => axios.post(`https://run.mocky.io/v3/0b14a8da-5fc7-4443-8511-53d687399bc9`, {
-		name: data.name,
+		cardNo: data.cardNumber,
+    cvv: data.cvc,
+    expiryMonth: (data.expiryDate).split('/')[0].trim(),
+    expiryYear: (data.expiryDate).split('/')[1].trim(),
+    name: data.cardHolder
 	}), {
 		onSuccess: (response) => {;
 			console.log("here")
