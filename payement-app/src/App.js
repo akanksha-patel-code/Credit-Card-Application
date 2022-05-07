@@ -13,6 +13,14 @@ function App() {
     wrapperProps,
   } = usePaymentInputs();
 
+  function validateUsername(value) {
+    let error;
+   if (!value) {
+     error = 'Card Holder name is required';
+   } 
+   return error;
+  }
+
   return (
     <Formik
       initialValues={{
@@ -36,20 +44,24 @@ function App() {
         return errors;
       }}
     >
-      {({ handleSubmit }) => (
+      {({ handleSubmit, errors, touched }) => (
         <form onSubmit={handleSubmit}>
-          <div className="flex flex-col h-full w-1/2">
+          <div className="flex flex-col">
+            <div className="flex justify-center items-center flex-col">
             <label className="text-xl font-bold mt-8">Credit Holder Name</label>
             <Field
               name="cardHolder"
               placeholder="John Smith"
               type="text"
-              className="w-1/2 border-2 border-gray-400 rounded-md outline-white"
+              className="w-1/4 border-2 border-gray-400 rounded-md outline-white"
+              validate={validateUsername}
             />
+            {errors.cardHolder && touched.cardHolder && 
+            <div className="text-red-700 text-xs flex-none">{errors.cardHolder}</div>}
             <label className="text-xl font-bold mt-8">
               Credit Card Details
             </label>
-            <PaymentInputsWrapper className="w-1/2" {...wrapperProps}>
+            <PaymentInputsWrapper className="w-1/4 justify-center flex items-center" {...wrapperProps}>
               <svg {...getCardImageProps({ images })} />
               <Field name="cardNumber">
                 {({ field }) => (
@@ -83,11 +95,12 @@ function App() {
               </Field>
             </PaymentInputsWrapper>
             <button
-              className="w-1/2 border rounded-lg text-white bg-blue-500 mt-8 hover:bg-white hover:text-blue-500 hover:border hover:border-blue-500"
+              className="w-1/6 py-2 border rounded-lg text-white bg-blue-500 mt-8 hover:bg-white hover:text-blue-500 hover:border hover:border-blue-500"
               type="submit"
             >
               Submit
             </button>
+            </div>
           </div>
         </form>
       )}
