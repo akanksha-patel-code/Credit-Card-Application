@@ -48,7 +48,7 @@ it("should render card detail page on init correctly", () => {
 });
 
 it("should render card detail page with input values correctly", async () => {
-	const { container } = render(
+	render(
     <QueryClientProvider client={queryClient}>
       <Main />
     </QueryClientProvider>
